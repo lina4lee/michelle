@@ -1,11 +1,11 @@
 
 Calculating invoices for customer billing
 
-Background
+*Background*
 
 In the past, we provided some raw billing data in JSON format to the finance team, which they used to manually generate monthly invoices for our customers. Recently, they’ve asked us to create some automation to make this process less error-prone.
 
-Instructions
+*Instructions*
 
 Your goal is to implement the billFor function to calculate the total monthly bill for a customer.
 
@@ -20,11 +20,11 @@ For each day of the month, identify which users were active that day
 Multiply the number of active users for the day by the daily rate to calculate the total for the day
 Return the running total for the month at the end, rounded to 2 decimal places
 
-Testing
+*Testing*
 
 The automated tests we provide only cover a few key cases, so you should plan to add some of your own tests or modify the existing ones to ensure that your solution handles any edge cases. You should be able to follow the existing patterns for naming and constructing tests to add your own.
 
-Notes / Edge cases
+*Notes / Edge cases*
 
 It’s more important for the return value to be correct than it is for the algorithm to be highly optimized.
 You can store intermediate results as any kind of decimal type (e.g. float, double). You do not need to round values until the last step.
