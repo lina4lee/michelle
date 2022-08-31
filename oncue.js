@@ -65,14 +65,13 @@ function billFor(month, activeSubscription, users) {
   month += '-01 ' // '2022-04-01'
   for (let i = 0; i < users.length; i++) {
     // determine range of days
-    console.log(month);
-    console.log(new Date(month))
+
     const firstDay = firstDayOfMonth(new Date(month));
-    console.log(firstDay)
+
     const startActive = users[i].activatedOn;
-    console.log(startActive)
+
     const startDeactive = users[i].deactivatedOn;
-    console.log(startDeactive)
+
     // if activatedOn < firstDayOfMonth of given month
     if (startActive < firstDay && (startDeactive > lastDayOfMonth(new Date(month)) || !startDeactive)) {
       // determine number of days in the month
@@ -85,7 +84,6 @@ function billFor(month, activeSubscription, users) {
       // determine difference between startActive and startDeactive
       const diff = nextDay(startDeactive) - firstDay 
       diffInDays = diff / (1000 * 3600 * 24);
-      console.log(diffInDays)
       totalDays += diffInDays;
     }
 
@@ -128,11 +126,10 @@ function billFor(month, activeSubscription, users) {
     // const differenceInDays = differenceInTime / (1000 * 3600 * 24);
     // totalDays += differenceInDays;
   }
-  console.log(totalDays)
+
   const total = totalDays * dailyRate;
-  console.log(typeof total)
   // return total for the month rounded to 2 decimal places
-  console.log(total.toFixed(2))
+
   return total.toFixed(2);
 }
 
