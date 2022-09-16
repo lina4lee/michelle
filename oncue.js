@@ -49,64 +49,56 @@
  */
 
 function billFor(month, activeSubscription, users) {
-  console.log(users)
   // calculate a daily rate for the active subscription tier
   // take monthlyPriceInDollars and divide by number of days in that month
   // convert month string into month and year vars
-  const year = month.slice(0, 4);
-  const currMonth = month.slice(-2);
+  const year = month.slice(0, 4); currMonth = month.slice(-2);
   const daysInMonth = getDays(year, currMonth);
   const dailyRate = activeSubscription.monthlyPriceInDollars / daysInMonth;
-  console.log(dailyRate)
-  // for each day of month, identify which users were active
-  // iterate through users array
   let totalDays = 0;
 
-  month += '-01 ' // '2022-04-01'
+  // for each day of month, identify which users were active by iterating through users array
   for (let i = 0; i < users.length; i++) {
-    // determine range of days
 
     const firstDay = firstDayOfMonth(new Date(month));
-
-    const startActive = users[i].activatedOn;
-
-    const startDeactive = users[i].deactivatedOn;
+    const lastDay = lastDayOfMonth(new Date(month));
+    const { activatedOn, deactivatedOn } = users[i];
 
     // if activatedOn < firstDayOfMonth of given month
-    if (startActive < firstDay && (startDeactive > lastDayOfMonth(new Date(month)) || !startDeactive)) {
+    if (activatedOn < firstDay && (deactivatedOn > lastDay || !deactivatedOn)) {
       // determine number of days in the month
       totalDays += daysInMonth; 
     }
 
     // check if deact is null then...
 
-    if (startActive < firstDay && startDeactive < lastDayOfMonth(new Date(month)) && startDeactive !== null) {
+    if (activatedOn < firstDay && deactivatedOn < lastDay && deactivatedOn !== null) {
       // determine difference between startActive and startDeactive
-      const diff = nextDay(startDeactive) - firstDay 
+      const diff = nextDay(deactivatedOn) - firstDay 
       diffInDays = diff / (1000 * 3600 * 24);
       totalDays += diffInDays;
     }
 
-    if (startActive > firstDay) { 
+    if (activatedOn > firstDay) { 
       const endOfMonth = lastDayOfMonth(new Date(month))
 
-      if (!startDeactive) {
-        const diff = nextDay(endOfMonth) - startActive;
+      if (!deactivatedOn) {
+        const diff = nextDay(endOfMonth) - activatedOn;
         diffInDays = diff / (1000 * 3600 * 24);
         totalDays += diffInDays;
       }
 
       // deactivatedOn > lastDayOfMonth of given month, then find difference between activatedOn to nextDay(last day of month)
-      else if (startDeactive > endOfMonth || !startDeactive) {
+      else if (deactivatedOn > endOfMonth || !deactivatedOn) {
 
-        const diff = nextDay(endOfMonth) - startActive;
+        const diff = nextDay(endOfMonth) - activatedOn;
         diffInDays = diff / (1000 * 3600 * 24);
         totalDays += diffInDays;
       }
 
       // deactivatedOn < lastDayOfMonth of given month, then find diff between activatedOn to nextDay(deactivatedOn)
-      else if (startDeactive < endOfMonth) {
-          const diff = nextDay(startDeactive) - startActive;
+      else if (deactivatedOn < endOfMonth) {
+        const diff = nextDay(deactivatedOn) - activatedOn;
           diffInDays = diff / (1000 * 3600 * 24);
           totalDays += diffInDays
         }
@@ -129,8 +121,7 @@ function billFor(month, activeSubscription, users) {
 
   const total = totalDays * dailyRate;
   // return total for the month rounded to 2 decimal places
-
-  return total.toFixed(2);
+  return Number(total.toFixed(2));
 }
 
 
@@ -218,11 +209,11 @@ const constantUsers = [
 const noUsers = [];
 
 console.log(billFor("2022-04", activeSubscription, users));
-console.log(billFor("2022-04", activeSubscription, userSignedUp));
-console.log(billFor("2022-04", activeSubscription, noUsers));
-console.log(billFor('2019-01', newPlan, noUsers));
-console.log(billFor('2019-01', newPlan, userSignedUp));
-console.log(billFor('2019-01', newPlan, constantUsers));
+// console.log(billFor("2022-04", activeSubscription, userSignedUp));
+// console.log(billFor("2022-04", activeSubscription, noUsers));
+// console.log(billFor('2019-01', newPlan, noUsers));
+// console.log(billFor('2019-01', newPlan, userSignedUp));
+// console.log(billFor('2019-01', newPlan, constantUsers));
 
 const birthday = new Date('August 19, 1975');
 console.log(birthday)
